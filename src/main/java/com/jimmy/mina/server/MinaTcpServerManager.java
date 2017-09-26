@@ -3,7 +3,7 @@ package com.jimmy.mina.server;
 import org.apache.mina.core.session.IdleStatus;
 
 import com.jimmy.mina.base.BaseTCPServer;
-import com.jimmy.mina.client.MinaEnum;
+import com.jimmy.mina.base.Constants;
 
 public class MinaTcpServerManager extends BaseTCPServer {
 
@@ -18,7 +18,7 @@ public class MinaTcpServerManager extends BaseTCPServer {
 	 * 初始化socket端口
 	 */
 	public MinaTcpServerManager(){
-		super(MinaEnum.SEVER_PORT.getCode());
+		super(Constants.SERVER_PORT);
 	}
 	
 
@@ -36,6 +36,6 @@ public class MinaTcpServerManager extends BaseTCPServer {
 	public void setAcceptor() {
 		super.setAcceptor();
 		ACCEPTOR.getSessionConfig().setReadBufferSize(2048);
-		//ACCEPTOR.getSessionConfig().setIdleTime(IdleStatus.BOTH_IDLE, 10);
+		ACCEPTOR.getSessionConfig().setIdleTime(IdleStatus.BOTH_IDLE, 10);
 	}
 }

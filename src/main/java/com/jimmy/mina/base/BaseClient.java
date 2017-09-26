@@ -18,6 +18,7 @@ import org.apache.mina.filter.codec.ProtocolCodecFilter;
 import org.apache.mina.filter.codec.textline.LineDelimiter;
 import org.apache.mina.filter.codec.textline.TextLineCodecFactory;
 import org.apache.mina.filter.logging.LoggingFilter;
+import org.apache.mina.transport.socket.nio.NioDatagramConnector;
 import org.apache.mina.transport.socket.nio.NioSocketConnector;
 
 import com.jimmy.mina.client.MsgClientHandle;
@@ -32,13 +33,17 @@ public abstract class BaseClient{
 	private String HOST;
 	private int PORT;
 	private IoConnector CONNECTOR;
+	private int CONNTYPE;
+	
+	
 	ProtocolCodecFactory CODECFACTORY;
 	boolean isTcp;
     String msg;
 
-	public BaseClient(String host, int port) {
+	public BaseClient(String host, int port,int connType) {
 		HOST = host;
 		PORT = port;
+		CONNTYPE = connType;
 	}
 
 	public BaseClient(String host, int port, ProtocolCodecFactory codecFactory) {
@@ -55,7 +60,16 @@ public abstract class BaseClient{
 					LineDelimiter.WINDOWS.getValue(),
 					LineDelimiter.WINDOWS.getValue());
 		}
-		CONNECTOR = new NioSocketConnector();
+		switch (CONNTYPE) {
+		case 1:
+			CONNECTOR = new NioSocketConnector();
+			break;
+		case 2:
+			CONNECTOR = new NioDatagramConnector();
+			break;
+		default:
+			break;
+		}
 		CONNECTOR.getFilterChain().addLast("logger", new LoggingFilter());//日志过滤器
 		CONNECTOR.getFilterChain().addLast("codec",
 				new ProtocolCodecFilter(CODECFACTORY));

@@ -3,7 +3,7 @@ package com.jimmy.mina.server;
 import org.apache.mina.core.session.IdleStatus;
 
 import com.jimmy.mina.base.BaseUDPServer;
-import com.jimmy.mina.client.MinaEnum;
+import com.jimmy.mina.base.Constants;
 
 public class MinaUdpServerManager extends BaseUDPServer {
 
@@ -18,7 +18,7 @@ public class MinaUdpServerManager extends BaseUDPServer {
 	 * 初始化socket端口
 	 */
 	public MinaUdpServerManager(){
-		super(MinaEnum.SEVER_PORT.getCode());
+		super(Constants.SERVER_PORT);
 	}
 	
 

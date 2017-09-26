@@ -1,4 +1,4 @@
-package com.jimmy.mina.client;
+package com.jimmy.mina.base;
 
 /**
  * 常量枚举类
@@ -6,7 +6,8 @@ package com.jimmy.mina.client;
  *
  */
 public enum MinaEnum {
-	SEVER_PORT(9123,"服务端口");
+	CONN_TYPE_TCP(1,"tcp"),
+	CONN_TYPE_UDP(2,"udp");
 	
 	private int code;
     private String desc;
