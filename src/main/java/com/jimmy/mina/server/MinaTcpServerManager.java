@@ -36,6 +36,6 @@ public class MinaTcpServerManager extends BaseTCPServer {
 	public void setAcceptor() {
 		super.setAcceptor();
 		ACCEPTOR.getSessionConfig().setReadBufferSize(2048);
-		ACCEPTOR.getSessionConfig().setIdleTime(IdleStatus.BOTH_IDLE, 10);
+		//ACCEPTOR.getSessionConfig().setIdleTime(IdleStatus.BOTH_IDLE, 10);
 	}
 }

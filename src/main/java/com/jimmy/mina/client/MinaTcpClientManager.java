@@ -22,7 +22,7 @@ public class MinaTcpClientManager extends BaseClient{
 		//测试
 		MinaTcpClientManager client = new MinaTcpClientManager(Constants.SERVER_IP, Constants.SERVER_PORT);
 		client.startup();
-		
+		client.stop();
 	}
 
 
