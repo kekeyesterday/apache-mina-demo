@@ -7,43 +7,46 @@ import org.apache.mina.core.session.IdleStatus;
 import org.apache.mina.core.session.IoSession;
 
 public class MsgServerHandle implements IoHandler {
-
+	private static long sessionId;
 	
 
 	@Override
 	public void inputClosed(IoSession session) throws Exception {
-		System.out.println("=====MsgServerHandle=========inputClosed==================");
+		System.out.println(sessionId + "=====MsgServerHandle=========inputClosed==================");
+		session.closeNow();
 		
 	}
 
 	@Override
 	public void sessionCreated(IoSession session) throws Exception {
-		System.out.println("=====MsgServerHandle=========sessionCreated==================");
+		sessionId = session.getId();
+		System.out.println(sessionId + "=====MsgServerHandle=========sessionCreated==================");
 		
 	}
 
 	@Override
 	public void sessionOpened(IoSession session) throws Exception {
-		System.out.println("=====MsgServerHandle=========sessionOpened==================");
+		System.out.println(sessionId + "=====MsgServerHandle=========sessionOpened==================");
 		
 	}
 
 	@Override
 	public void sessionClosed(IoSession session) throws Exception {
 		session.write("quite");
-		System.out.println("=====MsgServerHandle=========sessionClosed==================");
+		System.out.println(sessionId + "=====MsgServerHandle=========sessionClosed==================");
 		
 	}
 
 	@Override
 	public void sessionIdle(IoSession session, IdleStatus status) throws Exception {
-		System.out.println("=====MsgServerHandle=========sessionIdle==================");
+		System.out.println(sessionId + "=====MsgServerHandle=========sessionIdle==================");
 		
 	}
 
 	@Override
 	public void exceptionCaught(IoSession session, Throwable cause) throws Exception {
-		System.out.println("=====MsgServerHandle=========exceptionCaught==================");
+		System.out.println(sessionId + "=====MsgServerHandle=========exceptionCaught==================");
+		cause.printStackTrace();
 		
 	}
 
@@ -57,13 +60,13 @@ public class MsgServerHandle implements IoHandler {
 		Date date = new Date();
 		session.write("date server:" + date);
 		System.out.println("Message written...");  
-		System.out.println("=====MsgServerHandle=========messageReceived==================" + msg);
+		System.out.println(sessionId + "=====MsgServerHandle=========messageReceived==================" + msg);
 		
 	}
 
 	@Override
 	public void messageSent(IoSession session, Object message) throws Exception {
-		System.out.println("====MsgServerHandle==========messageSent==================" + message);
+		System.out.println(sessionId + "====MsgServerHandle==========messageSent==================" + message);
 		
 	}
 

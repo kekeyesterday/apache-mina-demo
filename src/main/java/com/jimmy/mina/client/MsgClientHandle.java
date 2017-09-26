@@ -1,7 +1,5 @@
 package com.jimmy.mina.client;
 
-import java.util.Scanner;
-
 import org.apache.mina.core.service.IoHandler;
 import org.apache.mina.core.session.IdleStatus;
 import org.apache.mina.core.session.IoSession;

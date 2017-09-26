@@ -56,6 +56,8 @@ public abstract class BaseServer {
                 .forName(Constants.CHARSET),
                 LineDelimiter.WINDOWS.getValue(),
                 LineDelimiter.WINDOWS.getValue());
+		ACCEPTOR.getFilterChain().addLast(
+				"codec",new ProtocolCodecFilter(CODECFACTORY));
     }
 
     protected void setHandler(){
@@ -72,6 +74,7 @@ public abstract class BaseServer {
         ACCEPTOR.getFilterChain().addLast("logger", lf);
         ACCEPTOR.getFilterChain().addLast("ThreadPool",
                 new ExecutorFilter(Executors.newCachedThreadPool()));
+        ACCEPTOR.getFilterChain().addLast("keepAlive", new HachiKeepAliveFilterInMina());//设置心跳检测
     }
 
     /**
@@ -79,17 +82,16 @@ public abstract class BaseServer {
      */
 	public void startup() {
 		try {
+			//设置接收器
             setAcceptor();
-
+            
             // 设置编解码器
             setCodec();
 
-			ACCEPTOR.getFilterChain().addLast(
-					"codec",new ProtocolCodecFilter(CODECFACTORY));
-
             // 设置过滤器
 			setFilter();
-
+			
+			//设置空闲时间
             setIdletime();
             IoSessionConfig cfg = ACCEPTOR.getSessionConfig();
             cfg.setIdleTime(IdleStatus.BOTH_IDLE, IDLETIME);
