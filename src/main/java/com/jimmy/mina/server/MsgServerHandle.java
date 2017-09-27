@@ -5,8 +5,11 @@ import java.util.Date;
 import org.apache.mina.core.service.IoHandler;
 import org.apache.mina.core.session.IdleStatus;
 import org.apache.mina.core.session.IoSession;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class MsgServerHandle implements IoHandler {
+	private Logger logger = LoggerFactory.getLogger(MsgServerHandle.class);
 	private static long sessionId;
 	
 
@@ -60,6 +63,7 @@ public class MsgServerHandle implements IoHandler {
 		Date date = new Date();
 		session.write("date server:" + date);
 		System.out.println("Message written...");  
+		logger.info(sessionId + "=====MsgServerHandle=========messageReceived==================" + msg);
 		System.out.println(sessionId + "=====MsgServerHandle=========messageReceived==================" + msg);
 		
 	}

@@ -25,7 +25,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 /**
  * BaseServer
- * User: jozbt
+ * User: zhangjun
  * Date: 12-11-29
  * Time: 下午3:33
  * To change this template use File | Settings | File Templates.
@@ -103,7 +103,7 @@ public abstract class BaseServer {
             // 绑定逻辑处理器
             setHandler();
 
-			// 绑定端口
+			// 绑定端口,并启动
 			ACCEPTOR.bind(new InetSocketAddress(PORT));
 		} catch (Exception e) {
 			logger.error("启动mina服务异常", e);
