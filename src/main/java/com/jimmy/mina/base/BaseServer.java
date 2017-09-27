@@ -8,10 +8,10 @@ package com.jimmy.mina.base;
 
 import java.net.InetSocketAddress;
 import java.nio.charset.Charset;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import org.apache.mina.core.service.IoAcceptor;
-import org.apache.mina.core.service.IoHandler;
 import org.apache.mina.core.session.IdleStatus;
 import org.apache.mina.core.session.IoSessionConfig;
 import org.apache.mina.filter.codec.ProtocolCodecFactory;
@@ -37,6 +37,7 @@ public abstract class BaseServer {
     protected IoAcceptor ACCEPTOR;
     protected ProtocolCodecFactory CODECFACTORY;
     int IDLETIME;
+    private ExecutorService executor = Executors.newFixedThreadPool(1000); //固定大小为1000的连接池 
 
     public BaseServer(int port, ProtocolCodecFactory codecFactory) {
         PORT = port;
@@ -72,8 +73,11 @@ public abstract class BaseServer {
         LoggingFilter lf = new LoggingFilter();
         lf.setMessageReceivedLogLevel(LogLevel.DEBUG);
         ACCEPTOR.getFilterChain().addLast("logger", lf);
+//        ACCEPTOR.getFilterChain().addLast("ThreadPool",
+//                new ExecutorFilter(Executors.newCachedThreadPool()));
         ACCEPTOR.getFilterChain().addLast("ThreadPool",
-                new ExecutorFilter(Executors.newCachedThreadPool()));
+                new ExecutorFilter(executor));
+        
         ACCEPTOR.getFilterChain().addLast("keepAlive", new HachiKeepAliveFilterInMina());//设置心跳检测
     }
 
