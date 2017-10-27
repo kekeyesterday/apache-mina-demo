@@ -12,6 +12,7 @@ public class MinaTcpServerManager extends BaseTCPServer {
 		MinaTcpServerManager tcpServerManager = new MinaTcpServerManager();
 		tcpServerManager.startup();
 		System.out.println("======tcp server 启动成功=====");
+//		Thread.sleep(5*1000l);
 	}
 	
 	/**

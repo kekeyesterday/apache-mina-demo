@@ -1,5 +1,7 @@
 package com.jimmy.mina.client;
 
+import org.apache.mina.core.buffer.IoBuffer;
+
 import com.jimmy.mina.base.BaseClient;
 import com.jimmy.mina.base.Constants;
 import com.jimmy.mina.base.MinaEnum;
@@ -24,6 +26,17 @@ public class MinaUdpClientManager extends BaseClient{
 		MinaTcpClientManager client = new MinaTcpClientManager(Constants.SERVER_IP, Constants.SERVER_PORT,MinaEnum.CONN_TYPE_UDP.getCode());
 		client.startup();
 		client.stop();
+		
+
+		/*
+		Long free = Runtime.getRuntime().freeMemory();
+		IoBuffer buffer = IoBuffer.allocate(8);
+		buffer.putLong(free);
+		//buffer.flip();
+		buffer.rewind();
+		System.out.println(free);
+		long freeRec = buffer.getLong();
+		System.out.println("freeRec:" + freeRec);*/
 	}
 
 

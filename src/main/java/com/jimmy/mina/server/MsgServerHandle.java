@@ -1,12 +1,16 @@
 package com.jimmy.mina.server;
 
+import java.net.SocketAddress;
 import java.util.Date;
 
+import org.apache.mina.core.buffer.IoBuffer;
 import org.apache.mina.core.service.IoHandler;
 import org.apache.mina.core.session.IdleStatus;
 import org.apache.mina.core.session.IoSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.jimmy.mina.vo.MessageModle;
 
 public class MsgServerHandle implements IoHandler {
 	private Logger logger = LoggerFactory.getLogger(MsgServerHandle.class);
@@ -17,13 +21,14 @@ public class MsgServerHandle implements IoHandler {
 	public void inputClosed(IoSession session) throws Exception {
 		System.out.println(sessionId + "=====MsgServerHandle=========inputClosed==================");
 		session.closeNow();
-		
 	}
 
 	@Override
 	public void sessionCreated(IoSession session) throws Exception {
 		sessionId = session.getId();
-		System.out.println(sessionId + "=====MsgServerHandle=========sessionCreated==================");
+		SocketAddress socketAddress = session.getRemoteAddress();
+		
+		System.out.println(sessionId + "=====MsgServerHandle=========sessionCreated==================" + socketAddress.toString());
 		
 	}
 
@@ -55,16 +60,32 @@ public class MsgServerHandle implements IoHandler {
 
 	@Override
 	public void messageReceived(IoSession session, Object message) throws Exception {
-		String msg = message.toString();
-		if(msg.trim().equals("quit")){
-			session.closeNow();
+		
+		MessageModle mmd = null;
+		if(null == message){
 			return;
 		}
-		Date date = new Date();
-		session.write("date server:" + date);
-		System.out.println("Message written...");  
-		logger.info(sessionId + "=====MsgServerHandle=========messageReceived==================" + msg);
-		System.out.println(sessionId + "=====MsgServerHandle=========messageReceived==================" + msg);
+		try {
+			mmd = (MessageModle)message;
+			String msg = mmd.toString();//message.toString();
+			if(msg.trim().equals("quit")){
+				session.closeNow();
+				return;
+			}
+			Date date = new Date();
+			mmd.setMsg("date server:" + date);
+			IoBuffer buffer = IoBuffer.allocate(8);
+			buffer.setAutoExpand(Boolean.TRUE);
+			buffer.putObject(buffer);
+			session.write(mmd);
+			//session.write("date server:" + date);
+			//session.getService().broadcast("这是一条广播消息...");
+			System.out.println("Message written...");  
+			logger.info(sessionId + "=====MsgServerHandle=========messageReceived==================" + msg);
+			System.out.println(sessionId + "=====MsgServerHandle=========messageReceived==================" + msg);
+		} catch (Exception e) {
+			System.out.println("exception message:" + message);
+		}
 		
 	}
 

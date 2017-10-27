@@ -16,6 +16,7 @@ import org.apache.mina.core.session.IdleStatus;
 import org.apache.mina.core.session.IoSessionConfig;
 import org.apache.mina.filter.codec.ProtocolCodecFactory;
 import org.apache.mina.filter.codec.ProtocolCodecFilter;
+import org.apache.mina.filter.codec.serialization.ObjectSerializationCodecFactory;  
 import org.apache.mina.filter.codec.textline.LineDelimiter;
 import org.apache.mina.filter.codec.textline.TextLineCodecFactory;
 import org.apache.mina.filter.executor.ExecutorFilter;
@@ -53,10 +54,13 @@ public abstract class BaseServer {
     protected abstract void setAcceptor();
 
     protected void setCodec(){
-        CODECFACTORY = new TextLineCodecFactory(Charset
-                .forName(Constants.CHARSET),
-                LineDelimiter.WINDOWS.getValue(),
-                LineDelimiter.WINDOWS.getValue());
+//        CODECFACTORY = new TextLineCodecFactory(Charset
+//                .forName(Constants.CHARSET),
+//                LineDelimiter.WINDOWS.getValue(),
+//                LineDelimiter.WINDOWS.getValue());
+        
+        
+        CODECFACTORY = new ObjectSerializationCodecFactory();
 		ACCEPTOR.getFilterChain().addLast(
 				"codec",new ProtocolCodecFilter(CODECFACTORY));
     }
@@ -78,7 +82,7 @@ public abstract class BaseServer {
         ACCEPTOR.getFilterChain().addLast("ThreadPool",
                 new ExecutorFilter(executor));
         
-        ACCEPTOR.getFilterChain().addLast("keepAlive", new HachiKeepAliveFilterInMina());//设置心跳检测
+//        ACCEPTOR.getFilterChain().addLast("keepAlive", new HachiKeepAliveFilterInMina());//设置心跳检测
     }
 
     /**
@@ -97,7 +101,7 @@ public abstract class BaseServer {
 			
 			//设置空闲时间
             setIdletime();
-            IoSessionConfig cfg = ACCEPTOR.getSessionConfig();
+            IoSessionConfig  cfg = ACCEPTOR.getSessionConfig();
             cfg.setIdleTime(IdleStatus.BOTH_IDLE, IDLETIME);
 
             // 绑定逻辑处理器

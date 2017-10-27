@@ -1,8 +1,11 @@
 package com.jimmy.mina.client;
 
+import org.apache.mina.core.buffer.IoBuffer;
 import org.apache.mina.core.service.IoHandler;
 import org.apache.mina.core.session.IdleStatus;
 import org.apache.mina.core.session.IoSession;
+
+import com.jimmy.mina.vo.MessageModle;
 
 public class MsgClientHandle implements IoHandler {
 
@@ -46,17 +49,21 @@ public class MsgClientHandle implements IoHandler {
 
 	@Override
 	public void messageReceived(IoSession session, Object message) throws Exception {
-		String msg = message.toString();
-		if (msg.trim().equals("quit")) {
-			session.closeOnFlush();
-		}
-		System.out.println("===MsgClientHandle===========messageReceived==================" + msg);
-
+//		 if (message instanceof IoBuffer) {
+//			 IoBuffer buffer = (IoBuffer)message;
+//			 MessageModle mdd = (MessageModle) buffer.getObject();
+//				String msg = mdd.toString();//message.toString();
+//				if (msg.trim().equals("quit")) {	
+//					session.closeOnFlush();
+//				}
+//				System.out.println("===MsgClientHandle===========messageReceived==================" + msg);
+//		}
 	}
 
 	@Override
 	public void messageSent(IoSession session, Object message) throws Exception {
-		System.out.println("===MsgClientHandle===========messageSent==================" + message);
+		MessageModle mdd = (MessageModle) message;
+		System.out.println("===MsgClientHandle===========messageSent==================" + mdd);
 
 	}
 
